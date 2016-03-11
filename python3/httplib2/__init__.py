@@ -999,14 +999,14 @@ class Http(object):
                 raise
             except http.client.HTTPException:
                 if conn.sock is None:
-                    if i < RETRIES-1:
+                    if i < RETRIES:
                         conn.close()
                         conn.connect()
                         continue
                     else:
                         conn.close()
                         raise
-                if i < RETRIES-1:
+                if i < RETRIES:
                     conn.close()
                     conn.connect()
                     continue
@@ -1032,7 +1032,7 @@ class Http(object):
                 raise
             except (socket.error, http.client.HTTPException):
                 conn.close()
-                if i == 0:
+                if i < RETRIES:
                     conn.close()
                     conn.connect()
                     continue
